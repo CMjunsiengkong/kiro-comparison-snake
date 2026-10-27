@@ -15,7 +15,12 @@ After each run, add its numbers (credits, agent time, approvals) under "Session 
 
 | Run ID | Milestone | App / mode | Start tag | Date | Play check | Result | Interventions | Asked first? | Decision points | Setup steps | Surprises |
 |---|---|---|---|---|---|---|---|---|---|---|---|
+| R-M2-IDE-1 | M2 | Kiro IDE 1.4.26 / default agent, Autopilot | m2-start | 2026-10-27 | Snake visible and moving | — | 0 (1 approval: `uv run python -m pytest tests/test_render.py -q`) | No | — | TBD | Identical fix to CLI, byte for byte. Can revert the agent's file change in one click |
+| R-M2-CLI-1 | M2 | Kiro CLI 2.34.0 V3 / default agent | m2-start | 2026-10-27 | Snake visible and moving | — | 0 (1 approval: `uv run pytest tests/test_render.py -q`) | No | — | TBD | Identical fix to IDE, byte for byte |
 
 ## Session stats
 
-Paste the output of `scripts/session-stats.py` here.
+| Run | Session start (UTC) | Mode | User msgs | Tool appr | Review appr | Appr wait s | Agent s | Wall s | Credits |
+|---|---|---|---|---|---|---|---|---|---|
+| R-M2-CLI-1 | 2026-10-27 08:26 | autopilot | 0 | 1 | 0 | 1 | 30 | 31 | 0.52 |
+| R-M2-IDE-1 | 2026-10-27 08:01 | autopilot | 0 | 1 | 0 | 7 | 26 | 32 | 0.59 |
