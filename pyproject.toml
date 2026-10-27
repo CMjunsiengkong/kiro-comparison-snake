@@ -1,0 +1,14 @@
+[project]
+name = "snake-game"
+version = "0.1.0"
+description = "A classic Snake game written in Python with Pygame."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["pygame==2.6.1"]
+
+[dependency-groups]
+dev = ["pytest==8.3.3"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
