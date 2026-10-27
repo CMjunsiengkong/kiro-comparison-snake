@@ -1,0 +1,1 @@
+Every 30 minutes, run `uv run pytest` in this repo and add an entry to `reports/health.md` with the time, how many tests passed and failed, and the name of each failing test. Only report. Don't change any other file.
