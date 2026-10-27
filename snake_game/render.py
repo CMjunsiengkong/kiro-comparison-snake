@@ -44,15 +44,15 @@ def _draw_grid(surface: pygame.Surface, state: GameState) -> None:
 
 def draw(surface: pygame.Surface, state: GameState, fonts: Fonts) -> None:
     """Render one full frame."""
-    for i, cell in enumerate(state.snake):
-        color = config.SNAKE_HEAD_COLOR if i == 0 else config.SNAKE_BODY_COLOR
-        pygame.draw.rect(surface, color, _cell_rect(cell))
-
     surface.fill(config.BACKGROUND_COLOR)
     _draw_grid(surface, state)
 
     if state.food is not None:
         pygame.draw.rect(surface, config.FOOD_COLOR, _cell_rect(state.food))
+
+    for i, cell in enumerate(state.snake):
+        color = config.SNAKE_HEAD_COLOR if i == 0 else config.SNAKE_BODY_COLOR
+        pygame.draw.rect(surface, color, _cell_rect(cell))
 
     score_text = fonts.score.render("Score: {}".format(state.score), True, config.TEXT_COLOR)
     surface.blit(score_text, (10, 8))
