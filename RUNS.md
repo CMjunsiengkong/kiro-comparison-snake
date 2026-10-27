@@ -8,15 +8,14 @@ One row per run. Fill it in right after the run, while it's fresh.
 - **Interventions:** how many times you had to step in or correct it
 - **Asked first?:** whether it asked questions before coding, and how many
 - **Decision points:** M3 only, from `decision-points.md`, as asked / written down / silent, e.g. `3 / 4 / 1`
-- **Setup steps:** steps needed before the first prompt
 - **Surprises:** gotchas and anything the docs didn't tell you
 
 After each run, add its numbers (credits, agent time, approvals) under "Session stats" with `scripts/session-stats.py <run-id>`.
 
-| Run ID | Milestone | App / mode | Start tag | Date | Play check | Result | Interventions | Asked first? | Decision points | Setup steps | Surprises |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| R-M2-IDE-1 | M2 | Kiro IDE 1.4.26 / default agent, Autopilot | m2-start | 2026-10-27 | Snake visible and moving | — | 0 (1 approval: `uv run python -m pytest tests/test_render.py -q`) | No | — | TBD | Identical fix to CLI, byte for byte. Can revert the agent's file change in one click |
-| R-M2-CLI-1 | M2 | Kiro CLI 2.34.0 V3 / default agent | m2-start | 2026-10-27 | Snake visible and moving | — | 0 (1 approval: `uv run pytest tests/test_render.py -q`) | No | — | TBD | Identical fix to IDE, byte for byte |
+| Run ID | Milestone | App / mode | Start tag | Date | Play check | Result | Interventions | Asked first? | Decision points | Surprises |
+|---|---|---|---|---|---|---|---|---|---|---|
+| R-M2-IDE-1 | M2 | Kiro IDE 1.4.26 / default agent, Autopilot | m2-start | 2026-10-27 | Snake visible and moving | — | 0 (1 approval: `uv run python -m pytest tests/test_render.py -q`) | No | — | Identical fix to CLI, byte for byte. Can revert the agent's file change in one click |
+| R-M2-CLI-1 | M2 | Kiro CLI 2.34.0 V3 / default agent | m2-start | 2026-10-27 | Snake visible and moving | — | 0 (1 approval: `uv run pytest tests/test_render.py -q`) | No | — | Identical fix to IDE, byte for byte |
 
 ## Session stats
 
