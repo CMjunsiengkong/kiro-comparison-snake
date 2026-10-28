@@ -7,9 +7,11 @@
 #
 # 1. Agent's own tests: the suite exactly as the agent left it (for info).
 # 2. Official check, the PASS/FAIL that counts. On a scratch copy, test files
-#    the agent edited or deleted are restored from m3-start, so a run cannot
-#    pass by weakening tests; tests the agent added still run. The m3-start
-#    suite plus the hidden acceptance tests must pass.
+#    the agent deleted, or edited in a way that removes an `assert` or a
+#    `def test_` line, are restored from m3-start, so a run cannot pass by
+#    weakening tests. Other edits (e.g. a call adapted to a new argument) are
+#    kept, and tests the agent added still run. The m3-start suite plus the
+#    hidden acceptance tests must pass.
 #
 # M2 and M4 are not checked here: play the game and see the snake.
 set -euo pipefail
@@ -59,11 +61,18 @@ run_pytest() {
 
   echo "== 2. Official check =="
   rsync -a --exclude .venv --exclude "$acceptance" "$run_dir/" "$scratch/official/"
-  if ! git -C "$scratch/official" diff --quiet --diff-filter=MD "$tag" -- tests; then
-    echo "Edited or deleted test files, restored from $tag for this check:"
-    git -C "$scratch/official" --no-pager diff --name-only --diff-filter=MD "$tag" -- tests
-    git -C "$scratch/official" checkout "$tag" -- tests
-  fi
+  for f in $(git -C "$scratch/official" diff --name-only --diff-filter=D "$tag" -- tests); do
+    echo "Deleted test file, restored from $tag: $f"
+    git -C "$scratch/official" checkout "$tag" -- "$f"
+  done
+  for f in $(git -C "$scratch/official" diff --name-only --diff-filter=M "$tag" -- tests); do
+    if git -C "$scratch/official" diff "$tag" -- "$f" | grep -qE '^-[[:space:]]*(assert|def test_)'; then
+      echo "Edited test file removes an assert or a test, restored from $tag: $f"
+      git -C "$scratch/official" checkout "$tag" -- "$f"
+    else
+      echo "Edited test file kept (no assert or test removed): $f"
+    fi
+  done
   cp "$bench_dir/acceptance/test_m3_acceptance.py" "$scratch/official/tests/"
   echo "Added hidden acceptance tests."
   if run_pytest "$scratch/official"; then
