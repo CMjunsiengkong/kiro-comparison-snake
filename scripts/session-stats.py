@@ -10,9 +10,10 @@ runs are shown.
 
 Columns:
   user msgs    messages you sent after the first prompt (answers, "go ahead")
+  questions    questions the agent asked through a question prompt (e.g. Quick Spec)
   tool appr    tool approvals (Allow/Deny prompts)
   review appr  "Review changes" prompts (IDE Supervised mode)
-  appr wait    seconds spent waiting on you inside approval prompts
+  appr wait    seconds spent waiting on you inside approval and question prompts
   agent s      seconds the agent worked, minus approval waits
   wall s       first to last event, including your thinking time
   credits      credits charged for the session
@@ -37,6 +38,7 @@ def summarize(session_dir: Path) -> dict:
     pending = {}
     stats = {
         "user_msgs": -1,  # the first user message is the prompt itself
+        "questions": 0,
         "tool_appr": 0,
         "review_appr": 0,
         "appr_wait": 0.0,
@@ -50,7 +52,9 @@ def summarize(session_dir: Path) -> dict:
             stats["user_msgs"] += 1
         elif kind == "pending_interaction":
             pending[payload["toolCallId"]] = ts(event["timestamp"])
-            if payload.get("question") == "Review changes":
+            if payload.get("interactionType") == "user_input":
+                stats["questions"] += 1
+            elif payload.get("question") == "Review changes":
                 stats["review_appr"] += 1
             else:
                 stats["tool_appr"] += 1
@@ -79,15 +83,17 @@ def main() -> None:
             continue
         if wanted and workspace.name not in wanted:
             continue
+        if not (meta_file.parent / "messages.jsonl").exists():
+            continue  # a session that was opened but never got a message
         stats = summarize(meta_file.parent)
         rows.append((workspace.name, meta["createdAt"][:16].replace("T", " "),
                      "autopilot" if meta.get("autopilot") else "supervised", stats))
 
-    print("| Run | Session start (UTC) | Mode | User msgs | Tool appr | Review appr "
+    print("| Run | Session start (UTC) | Mode | User msgs | Questions | Tool appr | Review appr "
           "| Appr wait s | Agent s | Wall s | Credits |")
-    print("|---|---|---|---|---|---|---|---|---|---|")
+    print("|---|---|---|---|---|---|---|---|---|---|---|")
     for run, created, mode, s in sorted(rows, key=lambda row: (row[0], row[1])):
-        print(f"| {run} | {created} | {mode} | {s['user_msgs']} | {s['tool_appr']} "
+        print(f"| {run} | {created} | {mode} | {s['user_msgs']} | {s['questions']} | {s['tool_appr']} "
               f"| {s['review_appr']} | {s['appr_wait']:.0f} | {s['agent']:.0f} "
               f"| {s['wall']:.0f} | {s['credits']:.2f} |")
 
