@@ -36,8 +36,7 @@ The test harness for comparing Kiro IDE, Kiro CLI (V3) and Kiro Crew on the Snak
 |---|---|---|---|---|
 | M2: small bug | `R-M2-IDE-1`, `R-M2-CLI-1` | `m2-start` | `m2-bugfix.md` | Play check |
 | M3: feature | `R-M3-{IDE,CLI}-{PLAIN,PLAN,QUICKSPEC,SPEC}-1` (8 runs) | `m3-start` | `m3-feature.md` | `verify.sh` + play check + decision points |
-| M4: headless | `R-M4-CLI-1` | `m2-start` | `m4-headless.md` | Play check |
-| M5: Crew | `R-M5-CREW-1` | `m2-start` | `m5-crew.md` | Known answer: 47 passed, 1 failed (`test_draw_normal_frame`), and no file changed except `reports/health.md` |
+| M4: Crew | `R-M4-CREW-1` | `m2-start` | `m4-crew.md` | Known answer: 47 passed, 1 failed (`test_draw_normal_frame`), and no file changed except `reports/health.md` |
 
 ## One run
 

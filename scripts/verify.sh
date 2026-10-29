@@ -13,7 +13,7 @@
 #    kept, and tests the agent added still run. The m3-start suite plus the
 #    hidden acceptance tests must pass.
 #
-# M2 and M4 are not checked here: play the game and see the snake.
+# M2 is not checked here: play the game and see the snake.
 set -euo pipefail
 
 if [ $# -ne 1 ]; then
